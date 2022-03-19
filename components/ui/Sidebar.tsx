@@ -18,10 +18,14 @@ interface SidebarProps {}
 const menuItems: string[] = ["Inbox", "Starred", "Sent Mail", "Drafts"];
 
 const Sidebar: React.FC<SidebarProps> = () => {
-  const {sidemenuOpen, closeSideMenu} = useContext(UIContext);
+  const { sidemenuOpen, toogleSidebar } = useContext(UIContext);
 
   return (
-    <Drawer anchor="left" open={sidemenuOpen} onClose={closeSideMenu}>
+    <Drawer
+      anchor="left"
+      open={sidemenuOpen}
+      onClose={() => toogleSidebar(false)}
+    >
       <Box sx={{ width: 250 }}>
         <Box sx={{ padding: "5px 10px" }}>
           <Typography variant="h4">Menú</Typography>

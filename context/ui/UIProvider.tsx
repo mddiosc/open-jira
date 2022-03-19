@@ -3,21 +3,23 @@ import { UIContext, uiReducer } from "./";
 
 export interface UIState {
   sidemenuOpen: boolean;
+  isAddingEntry: boolean;
 }
 
 const UI_INITIAL_STATE: UIState = {
   sidemenuOpen: false,
+  isAddingEntry: false,
 };
 
 export const UIProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(uiReducer, UI_INITIAL_STATE);
 
-  const openSideMenu = () => {
-    dispatch({ type: "UI - Open Sidebar" });
+  const toogleSidebar = ( isOpenSidebar:boolean ) => {
+    dispatch({ type: "UI - Toogle Sidebar", payload: isOpenSidebar });
   };
 
-  const closeSideMenu = () => {
-    dispatch({ type: "UI - Close Sidebar" });
+  const setIsAddingEntry = (isAddingEntry: boolean) => {
+    dispatch({ type: "UI - Set Is Adding Entry", payload: isAddingEntry });
   };
 
   return (
@@ -26,8 +28,8 @@ export const UIProvider: React.FC = ({ children }) => {
         ...state,
         //methods
 
-        openSideMenu,
-        closeSideMenu,
+        setIsAddingEntry,
+        toogleSidebar,
       }}
     >
       {children}

@@ -6,11 +6,15 @@ import { UIContext } from "../../context/ui";
 interface NavbarProps {}
 
 const Navbar: React.FC<NavbarProps> = () => {
-  const { openSideMenu } = useContext(UIContext);
+  const { toogleSidebar } = useContext(UIContext);
   return (
     <AppBar position="sticky">
       <Toolbar>
-        <IconButton size="large" edge="start" onClick={openSideMenu}>
+        <IconButton
+          size="large"
+          edge="start"
+          onClick={() => toogleSidebar(true)}
+        >
           <MenuOutlinedIcon />
         </IconButton>
         <Typography variant="h6">OpenJira</Typography>

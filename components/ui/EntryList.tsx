@@ -25,7 +25,6 @@ const EntryList: React.FC<EntryListProps> = ({ status }) => {
 
   const onDropEntry = (event: React.DragEvent<HTMLDivElement>) => {
     const entryId = event.dataTransfer.getData("text/plain");
-    console.log("entryId", { id: entryId });
     const entry = entries.find((entry) => entry._id === entryId)!;
     entry.status = status;
     updateEntry(entry);

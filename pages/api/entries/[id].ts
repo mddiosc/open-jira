@@ -15,7 +15,7 @@ export default function handler(
 
   switch (req.method) {
     case "GET":
-      return getOneEntry(req, res);
+      return getEntry(req, res);
 
     case "PUT":
       return putEntry(req, res);
@@ -25,16 +25,18 @@ export default function handler(
   }
 }
 
-const getOneEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+const getEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   await db.connect();
 
   try {
     const entry = await Entry.findOne({ _id: req.query.id });
+    await db.disconnect();
     if (!entry) {
       return res.status(404).json({ message: "Entry not found" });
     }
     return res.status(200).json(entry);
   } catch (error) {
+    await db.disconnect();
     return res
       .status(500)
       .json({ message: "Algo salio mal, revisar consola del servidor" });

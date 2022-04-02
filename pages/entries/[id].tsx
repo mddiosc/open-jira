@@ -24,6 +24,7 @@ import { Entry, EntryStatus } from "../../interfaces";
 import { dbEntries } from "../../database";
 import { EntriesContext } from "../../context/entries";
 import { useRouter } from "next/router";
+import { dateFunctions } from "../../utils";
 
 const validStatus: EntryStatus[] = ["pending", "in-progress", "finished"];
 
@@ -70,7 +71,9 @@ const EntryPage: NextPage<EntryPageProps> = ({ entry }) => {
           <Card>
             <CardHeader
               title={`Entrada: ${inputValue}`}
-              subheader={`Creada hace: ${entry.createdAt}`}
+              subheader={`Creada ${dateFunctions.getFormatDistanceToNow(
+                new Date(entry.createdAt)
+              )}`}
             />
             <CardContent>
               <TextField

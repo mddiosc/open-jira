@@ -33,7 +33,7 @@ interface EntryPageProps {
 }
 
 const EntryPage: NextPage<EntryPageProps> = ({ entry }) => {
-  const { updateEntry } = useContext(EntriesContext);
+  const { updateEntry, deleteEntry } = useContext(EntriesContext);
   const [inputValue, setInputValue] = useState(entry.description);
   const [status, setStatus] = useState<EntryStatus>(entry.status);
   const [touched, setTouched] = useState(false);
@@ -61,6 +61,11 @@ const EntryPage: NextPage<EntryPageProps> = ({ entry }) => {
       status,
     };
     updateEntry(updatedEntry, true);
+    push("/");
+  };
+
+  const onDelete = () => {
+    deleteEntry(entry._id);
     push("/");
   };
 
@@ -127,6 +132,7 @@ const EntryPage: NextPage<EntryPageProps> = ({ entry }) => {
           right: 30,
           backgroundColor: "error.dark",
         }}
+        onClick={onDelete}
       >
         <DeleteOutlineOutlinedIcon />
       </IconButton>
@@ -141,7 +147,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   if (!entry) {
     return {
       redirect: {
-        destination: "/",
+        destination: "/error-entries",
         permanent: false,
       },
     };

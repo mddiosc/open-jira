@@ -11,9 +11,10 @@ export default function handler(
   switch (req.method) {
     case "GET":
       return getEntry(req, res);
-
     case "PUT":
       return putEntry(req, res);
+    case "DELETE":
+      return deleteEntry(req, res);
 
     default:
       return res.status(400).json({ message: "Method not allowed" });
@@ -56,6 +57,25 @@ const putEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     );
     await db.disconnect();
     return res.status(200).json(updateEntry!);
+  } catch (error) {
+    await db.disconnect();
+    console.log(error);
+    return res
+      .status(500)
+      .json({ message: "Algo salio mal, revisar consola del servidor" });
+  }
+};
+
+const deleteEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+  const { id } = req.query;
+  if (!id) {
+    return res.status(400).json({ message: "Id is required" });
+  }
+  try {
+    await db.connect();
+    await Entry.findByIdAndDelete(id);
+    await db.disconnect();
+    return res.status(200).json({ message: "Entry deleted" });
   } catch (error) {
     await db.disconnect();
     console.log(error);

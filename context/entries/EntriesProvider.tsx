@@ -46,6 +46,32 @@ export const EntriesProvider: React.FC = ({ children }) => {
     }
   };
 
+  const deleteEntry = async (id: string) => {
+    try {
+      await entriesApi.delete(`/entries/${id}`);
+      dispatch({ type: "[Entry] - Entry-Deleted", payload: id });
+      enqueueSnackbar("Entry deleted successfully", {
+        variant: "success",
+        autoHideDuration: 2000,
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+      });
+    } catch (error) {
+      console.log({ error });
+      enqueueSnackbar("Error deleted successfully", {
+        variant: "error",
+        autoHideDuration: 2000,
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+      });
+    }
+  }
+
+
   const refreshEntries = async () => {
     const { data } = await entriesApi.get<Entry[]>("/entries");
     dispatch({ type: "[Entry] - refresh-Data", payload: data });
@@ -62,6 +88,7 @@ export const EntriesProvider: React.FC = ({ children }) => {
         //Methods
         addNewEntry,
         updateEntry,
+        deleteEntry,
       }}
     >
       {children}
